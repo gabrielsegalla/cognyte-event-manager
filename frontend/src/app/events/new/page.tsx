@@ -2,9 +2,8 @@
 import api from "@/app/services/api";
 import notify from "@/app/services/notify";
 import moment from "moment";
-import Image from "next/image";
 import { useState } from "react";
-import { Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, FormFeedback, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, FormGroup,  Input, Label, Row } from "reactstrap";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function NewEvent() {
@@ -12,27 +11,28 @@ export default function NewEvent() {
     const [status, setStatus] = useState("");
     const [endDateReference, setEndDateReference] = useState<any>("");
     
-    const handleStatusChange = (e: any) => {
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setStatus(e.target.value);
     };
 
-    const handleStartDateChange = (e: any) => {
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEndDateReference(moment(e.target.value).add(1, 'day').format('YYYY-MM-DD'))
     };
 
-    const getFormattedDateTime = (date: any, time: any) => {
+    const getFormattedDateTime = (date: string, time: string) => {
         if (!date || !time) return null;
         return moment(`${date} ${time}`, 'YYYY-MM-DD HH:mm').toISOString();
     };
 
-    const submitNewEvent = (e: any) =>{
+    const submitNewEvent = (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
+        const form = e.target as HTMLFormElement;
         const body = {
-            title: e.target.eventTitle.value,
-            startDate: getFormattedDateTime(e.target.startDate.value, e.target.startTime.value),
-            endDate: getFormattedDateTime(e.target.endDate.value, e.target.endTime.value),
-            price: e.target.eventPrice.value,
-            status: String(e.target.eventStatus.value).toUpperCase(),
+            title: form.eventTitle.value,
+            startDate: getFormattedDateTime(form.startDate.value, form.startTime.value),
+            endDate: getFormattedDateTime(form.endDate.value, form.endTime.value),
+            price: form.eventPrice.value,
+            status: String(form.eventStatus.value).toUpperCase(),
         }
         try {
             api.post('/events', body, {
@@ -42,11 +42,12 @@ export default function NewEvent() {
               }).then((response)=>{
                 if(response.status === 200){
                     notify("Event created successfully!", "success")
-                    e.target.reset();
+                    form.reset();
                 }
             })
         } catch (error) {
             notify("An error occurred. Please try again later", "error")
+            console.error(error)
         }
           
     }
@@ -118,19 +119,19 @@ export default function NewEvent() {
                     </FormGroup>
                     <FormGroup>
                         <Label for="eventStatus">Event Status</Label>
-                        <Input 
-                            type="select" 
-                            name="status" 
+                        <select
+                            name="status"
                             id="eventStatus"
+                            className="form-control"
                             value={status}
                             onChange={handleStatusChange}
                             required
                         >
-                            <option hidden value=""></option>
+                            <option hidden value="">Select Status</option>
                             <option>Started</option>
                             <option>Completed</option>
                             <option>Paused</option>
-                        </Input>
+                        </select>
                     </FormGroup>
                     
                     <Button color="primary" outline type="submit">Save</Button>

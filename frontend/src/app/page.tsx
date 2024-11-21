@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import api from "./services/api";
 import { Event, EventInterface } from "./events/components/event";
@@ -25,7 +24,7 @@ export default function Home() {
     <>
       <Container className="my-5">
         <Row>
-          <Col md={10}>
+          <Col sm={12} md={10}>
             <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl ">Manage Your <span className="text-violet-800">Events</span> Here!</h1>
             <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Add, edit, and track your events effortlessly.</p>
           </Col>

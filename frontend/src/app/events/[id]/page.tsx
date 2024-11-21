@@ -30,7 +30,7 @@ export default function EventPage() {
     const [endTime, setEndTime] = useState<any>('')
     const [price, setPrice] = useState(event.price || "")
     const router = useRouter()
-    const [endDateReference, setEndDateReference] = useState<any>("");
+    const [endDateReference, setEndDateReference] = useState("");
 
 
     useEffect(()=>{
@@ -50,57 +50,58 @@ export default function EventPage() {
     },[event])
 
 
-    const defaultValueToDate = (datetime: any) =>{
+    const defaultValueToDate = (datetime: string) =>{
       const momentDate = moment(datetime);
       return momentDate.format("YYYY-MM-DD")
     }
 
-    const defaultValueToTime = (datetime: any) =>{
+    const defaultValueToTime = (datetime: string) =>{
       const momentDate = moment(datetime);
       return momentDate.format("HH:mm")
     }
 
-    const handleStatusChange = (e: any) => {
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setStatus(e.target.value);
     };
 
-    const handleTitleChange = (e: any) => {
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(e.target.value);
     };
 
-    const handlePriceChange = (e: any) => {
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setPrice(e.target.value);
     };
 
-    const handleStartDateChange = (e: any) => {
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setStartDate(e.target.value);
       setEndDateReference(moment(e.target.value).add(1, 'day').format('YYYY-MM-DD'))
     };
-    const handleStartTimeChange = (e: any) => {
+    const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setStartTime(e.target.value);
     };
-    const handleEndDateChange = (e: any) => {
+    const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setEndDate(e.target.value);
     };
-    const handleEndTimeChange = (e: any) => {
+    const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setEndTime(e.target.value);
     };
 
-    const getFormattedDateTime = (date: any, time: any) => {
+    const getFormattedDateTime = (date: string, time: string) => {
       if (!date || !time) return null;
       return moment(`${date} ${time}`, 'YYYY-MM-DD HH:mm').toISOString();
     };
 
 
 
-    const submitEditEvent = (e: any) =>{
+    const submitEditEvent = (e: React.FormEvent<HTMLFormElement>) =>{
       e.preventDefault();
+      const form = e.target as HTMLFormElement;
       const body = {
-          title: e.target.eventTitle.value,
-          startDate: getFormattedDateTime(e.target.startDate.value, e.target.startTime.value),
-          endDate: getFormattedDateTime(e.target.endDate.value, e.target.endTime.value),
-          price: e.target.eventPrice.value,
-          status: String(e.target.eventStatus.value).toUpperCase(),
+          title: form.eventTitle.value,
+          startDate: getFormattedDateTime(form.startDate.value, form.startTime.value),
+          endDate: getFormattedDateTime(form.endDate.value, form.endTime.value),
+          price: form.eventPrice.value,
+          status: String(form.eventStatus.value).toUpperCase(),
       }
       try {
           api.put(`/events/${params? params.id: ''}`, body, {
@@ -141,7 +142,7 @@ export default function EventPage() {
     return (
       <>
         <Container className="my-5">
-          {mode !== 'delete' ? (
+          {mode != 'delete' ? (
               <>
               <div>
               <Breadcrumb tag="nav">
@@ -150,7 +151,7 @@ export default function EventPage() {
               </Breadcrumb>
               </div>
               <Row>
-                <Col md={10}>
+                <Col xs={7} md={10}>
                   <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
                     {event.title.split(" ").slice(0, -1).join(" ")}{" "}
                     <span className="text-violet-800">
@@ -158,7 +159,7 @@ export default function EventPage() {
                     </span>
                   </h1>
                 </Col>
-                <Col>
+                <Col xs={5}>
                   <Button color="primary" outline onClick={()=>{setMode('edit')}} className="mr-3">Edit</Button>
                   <Button color="danger" outline onClick={openModalToDeleteEvent}>Delete</Button>
                 </Col>
@@ -241,19 +242,19 @@ export default function EventPage() {
                       </FormGroup>
                       <FormGroup>
                           <Label for="eventStatus">Event Status</Label>
-                          <Input 
-                              type="select" 
-                              name="status" 
+                          <select
+                              name="status"
                               id="eventStatus"
+                              className="form-control"
                               value={status}
                               onChange={handleStatusChange}
                               disabled={mode != "edit"}
                           >
-                              <option hidden value=""></option>
+                              <option hidden value="">Select Status</option>
                               <option value={"STARTED"}>Started</option>
                               <option value={"COMPLETED"}>Completed</option>
                               <option value={"PAUSED"}>Paused</option>
-                          </Input>
+                          </select>
                       </FormGroup>
                       {mode === 'edit' ? (
                           <Row >
