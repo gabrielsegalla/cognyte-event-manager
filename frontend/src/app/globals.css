@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+  --background: #ededed;
+  --foreground: #6610f2;
+}
+
+*{
+  font-family: "Work Sans", sans-serif;
+}
+
+
+.CognyteButton {
+  background-color: var(--foreground);
+  border-color: #ffffff;
+}
+
+.CognyteButton:hover{
+  background-color: #4800b9 !important;
+}
+
+
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  
+}
+
+
+.event-card{
+  transition: all ease-in-out;
+  transition-duration: 0.2s;
+  color: var(--foreground);
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.event-card h3 {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: x-large;
+}
+
+.event-card .row{
+  margin: 5px 0px;
+}
+
+.event-card-image-row{
+  margin: 0px !important;
+}
+
+
+.event-card:hover {
+  background-color: var(--foreground);
+  color: #ffffff;
+  box-shadow: 0px 5px 20px 11px #00000047;
+}
+
+.event-card:hover .event-card-thumb {
+  background-color: red;
+}
+
+.event-card-thumb{
+  padding: 0px;
+}
+
+.events-cards-list{
+  margin-top: 100px;
+  padding: 0px;
+}
+
+.event-card-span{
+  position: relative;
+  background-color: #ffffff;
+  width: auto;
+  padding: 5px;
+  font-size: small;
+  font-weight: 700;
+  top: 29px;
+  color: #4800b9;
+}
+
+.modal-content{
+  background-color: var(--foreground) !important;
+  color: #ffffff !important;
+}
+
+.modal-header {
+  border: transparent !important;
+  font-weight: 800 !important;
+}
+
+.modal-body {
+  border: transparent !important;
+}
+
+.modal-footer{
+  border: transparent !important;
+}
